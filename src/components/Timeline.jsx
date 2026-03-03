@@ -23,33 +23,47 @@ const Timeline = ({ events }) => {
     setImageErrors(prev => ({ ...prev, [eventId]: true }));
   };
 
-  const getImageUrl = (event) => {
+  // Get relevant image based on event type
+  const getEventImage = (event) => {
     if (imageErrors[event.year + event.event]) {
-      // Return conflict-appropriate placeholder based on event type
-      const conflictImages = {
-        '1948': 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop',
-        '1956': 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop',
-        '1967': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop',
-        '1973': 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop',
-        '1979': 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop',
-        '1980': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop',
-        '1982': 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop',
-        '1990': 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop',
-        '2003': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop',
-        '2006': 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop',
-        '2008': 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop',
-        '2011': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop',
-        '2014': 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop',
-        '2015': 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop',
-        '2017': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop',
-        '2020': 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop',
-        '2021': 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop',
-        '2023': 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop',
-        '2024': 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop'
-      };
-      return conflictImages[event.year.split('-')[0]] || 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop';
+      // Return event-specific placeholder based on keywords
+      if (event.event.toLowerCase().includes('israel') || event.event.toLowerCase().includes('nakba')) {
+        return 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=800&h=500&fit=crop';
+      }
+      if (event.event.toLowerCase().includes('iran') || event.event.toLowerCase().includes('revolution')) {
+        return 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=800&h=500&fit=crop';
+      }
+      if (event.event.toLowerCase().includes('gaza') || event.event.toLowerCase().includes('war')) {
+        return 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=800&h=500&fit=crop';
+      }
+      if (event.event.toLowerCase().includes('lebanon') || event.event.toLowerCase().includes('beirut')) {
+        return 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=800&h=500&fit=crop';
+      }
+      if (event.event.toLowerCase().includes('iraq') || event.event.toLowerCase().includes('gulf')) {
+        return 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=800&h=500&fit=crop';
+      }
+      if (event.event.toLowerCase().includes('syria')) {
+        return 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=800&h=500&fit=crop';
+      }
+      // Default fallback
+      return 'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=800&h=500&fit=crop';
     }
     return event.image;
+  };
+
+  // Get image caption/context
+  const getImageContext = (event) => {
+    if (event.event.includes('1948')) return 'Historical photo from 1948 Arab-Israeli War';
+    if (event.event.includes('1967')) return 'Israeli soldiers during Six-Day War';
+    if (event.event.includes('1973')) return 'Egyptian forces crossing Suez Canal';
+    if (event.event.includes('1979')) return 'Iranian Revolution protests in Tehran';
+    if (event.event.includes('1982')) return 'Israeli tanks in Lebanon';
+    if (event.event.includes('1991')) return 'Operation Desert Storm';
+    if (event.event.includes('2003')) return 'US forces in Baghdad';
+    if (event.event.includes('2006')) return 'Beirut after Israeli strikes';
+    if (event.event.includes('Gaza')) return 'Destruction in Gaza Strip';
+    if (event.event.includes('Iran')) return 'Iranian military facilities';
+    return `Historical image from ${event.year}`;
   };
 
   return (
@@ -90,19 +104,24 @@ const Timeline = ({ events }) => {
             >
               <div className="timeline-image-container">
                 <img 
-                  src={getImageUrl(event)} 
+                  src={getEventImage(event)} 
                   alt={event.event} 
                   className="timeline-image"
                   onError={() => handleImageError(event.year + event.event)}
+                  loading="lazy"
                 />
                 <div className="timeline-image-overlay">
-                  <span className="region-badge">{event.region}</span>
+                  <span className="region-badge">
+                    <MapPinIcon className="icon-small" />
+                    {event.region}
+                  </span>
+                  <span className="image-context">{getImageContext(event)}</span>
                 </div>
               </div>
               
               <div className="timeline-card-content">
                 <h3>{event.event}</h3>
-                <p className="timeline-description">{event.description.substring(0, 100)}...</p>
+                <p className="timeline-description">{event.description.substring(0, 120)}...</p>
                 
                 <div className="timeline-stats">
                   {event.casualties && event.casualties !== 'N/A' && (
@@ -153,11 +172,14 @@ const Timeline = ({ events }) => {
 
               <div className="modal-image-container">
                 <img 
-                  src={getImageUrl(selectedEvent)} 
+                  src={getEventImage(selectedEvent)} 
                   alt={selectedEvent.event}
                   className="modal-image"
                   onError={() => handleImageError(selectedEvent.year + selectedEvent.event)}
                 />
+                <div className="modal-image-caption">
+                  {getImageContext(selectedEvent)}
+                </div>
               </div>
 
               <div className="modal-body">

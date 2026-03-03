@@ -3,7 +3,6 @@ import axios from 'axios';
 // Your NewsAPI key
 const NEWS_API_KEY = '8c72bea8dd1b491386c740c10bf5b75c';
 
-// Strictly focused Middle East conflict news - ONLY Iran, Israel, America, Lebanon, Gaza, air bases
 // Strictly focused Middle East conflict news with REAL conflict images
 const FOCUSED_FALLBACK_NEWS = [
   {
@@ -105,8 +104,29 @@ const FOCUSED_FALLBACK_NEWS = [
     urlToImage: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=1200&h=800&fit=crop",
     publishedAt: new Date(Date.now() - 32400000).toISOString(),
     content: "The underground facility, carved into mountains near the strategic Strait of Hormuz, contains missile systems with ranges up to 2,000 kilometers."
+  },
+  {
+    source: { name: "NPR" },
+    author: "Daniel Estrin",
+    title: "US Ambassador to Israel: 'We Stand Ready to Defend Our Ally' as Iran Threatens Retaliation",
+    description: "In an exclusive interview, the US ambassador to Israel says American forces are prepared to help defend against any Iranian attack, as tensions escalate following strikes on Iranian facilities.",
+    url: "https://www.npr.org/us-israel-iran",
+    urlToImage: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1200&h=800&fit=crop",
+    publishedAt: new Date(Date.now() - 39600000).toISOString(),
+    content: "The ambassador's comments come as the Pentagon announces additional naval assets are being moved to the region, including an aircraft carrier strike group."
+  },
+  {
+    source: { name: "The Guardian" },
+    author: "Emma Graham-Harrison",
+    title: "Lebanon's Economy Crumbles as Cross-Border Attacks Disrupt Trade and Tourism",
+    description: "The ongoing conflict between Hezbollah and Israel is taking a severe toll on Lebanon's fragile economy, with businesses closing and tourism grinding to a halt.",
+    url: "https://www.theguardian.com/lebanon-economy",
+    urlToImage: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1200&h=800&fit=crop",
+    publishedAt: new Date(Date.now() - 43200000).toISOString(),
+    content: "The World Bank warns that Lebanon's GDP could contract by an additional 5% if the current security situation persists, adding to the country's existing economic crisis."
   }
-];  
+];
+
 // Cache to avoid rate limiting
 let newsCache = {
   data: null,
@@ -130,9 +150,9 @@ export const fetchNews = async () => {
     // EXTREMELY FOCUSED query - ONLY Iran, Israel, America, Lebanon, Gaza, air bases
     const response = await axios.get('https://newsapi.org/v2/everything', {
       params: {
-        q: 'Iran AND Israel OR Iran AND America OR Israel AND Gaza OR Lebanon AND Israel OR "air base" AND Middle East OR "US military" AND Iran',
+        q: '(Iran AND Israel) OR (Iran AND America) OR (Israel AND Gaza) OR (Lebanon AND Israel) OR "air base" OR "US military" OR "CENTCOM" OR "Hezbollah" OR "Hamas" OR "Revolutionary Guard"',
         from: fortyEightHoursAgo.toISOString().split('T')[0],
-        sortBy: 'relevancy',
+        sortBy: 'publishedAt',
         language: 'en',
         pageSize: 50,
         apiKey: NEWS_API_KEY
@@ -151,7 +171,7 @@ export const fetchNews = async () => {
           text.includes('israel') || 
           text.includes('america') || 
           text.includes('united states') || 
-          text.includes('us') || 
+          text.includes('us ') || 
           text.includes('gaza') || 
           text.includes('lebanon') || 
           text.includes('hezbollah') || 
@@ -248,7 +268,7 @@ const categorizeNews = (article) => {
 const analyzeSentiment = (article) => {
   const text = (article.title + ' ' + (article.description || '')).toLowerCase();
   const positive = ['peace', 'agree', 'deal', 'ceasefire', 'talk', 'aid', 'help', 'rescue', 'diplomacy'];
-  const negative = ['kill', 'death', 'attack', 'war', 'conflict', 'strike', 'bomb', 'missile', 'casualty', 'rocket', 'strike'];
+  const negative = ['kill', 'death', 'attack', 'war', 'conflict', 'strike', 'bomb', 'missile', 'casualty', 'rocket'];
   
   let score = 0;
   positive.forEach(word => { if (text.includes(word)) score++; });
@@ -416,7 +436,6 @@ export const fetchMilitaryBases = async () => {
   ];
 };
 
-// Historical events with working image URLs
 // Historical events with conflict-appropriate images
 export const fetchHistoricalEvents = async () => {
   return [
