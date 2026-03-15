@@ -44,14 +44,18 @@ const MilitaryMap = ({ bases }) => {
         ))}
       </MapContainer>
       
-      <div className="map-legend">
-        <h3>📍 US Military Bases in the Region</h3>
-        <ul>
-          {bases && bases.map((base, index) => (
-            <li key={index}>{base.name} - {base.country}</li>
-          ))}
-        </ul>
-      </div>
+      <div className="map-legend" style={{ background: 'white', padding: '12px' }}>
+  <h3 style={{ color: '#111', fontSize: '16px', fontWeight: '700', marginBottom: '8px' }}>
+    📍 US Military Bases in the Region
+  </h3>
+  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+    {bases && bases.map((base, index) => (
+      <li key={index} style={{ color: '#222', fontSize: '14px', padding: '4px 0' }}>
+        {base.name} - {base.country}
+      </li>
+    ))}
+  </ul>
+</div>
     </div>
   );
 };

@@ -1,9 +1,27 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import axios from 'axios';
 
 // Your NewsAPI key
 const NEWS_API_KEY = '8c72bea8dd1b491386c740c10bf5b75c';
 
-// Strictly focused Middle East conflict news with REAL conflict images
+// Strictly focused Middle East conflict news with REAL conflict images from Wikimedia Commons
 const FOCUSED_FALLBACK_NEWS = [
   {
     source: { name: "BBC News" },
@@ -11,7 +29,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "US and Israel Launch Joint Military Strikes on Iranian Nuclear Facilities",
     description: "In a major escalation, American and Israeli forces have conducted coordinated airstrikes against Iranian nuclear sites, Pentagon officials confirm. The operation targeted multiple facilities deep inside Iran.",
     url: "https://www.bbc.com/news/world-middle-east-12345678",
-    urlToImage: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Iran-Iraq_war_1980-1988.png/800px-Iran-Iraq_war_1980-1988.png",
     publishedAt: new Date().toISOString(),
     content: "The strikes mark a significant escalation in the ongoing conflict, with US officials describing the operation as 'defensive' in nature. Iranian air defenses were activated across multiple provinces."
   },
@@ -21,7 +39,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "Gaza: Death Toll Rises as Israeli Airstrikes Continue for Third Day",
     description: "Israeli warplanes continue pounding targets across Gaza Strip as militant groups fire rockets into southern Israel. Casualties mount as humanitarian situation deteriorates.",
     url: "https://www.aljazeera.com/gaza-war",
-    urlToImage: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Gaza_Strip_destruction_2014.jpg/800px-Gaza_Strip_destruction_2014.jpg",
     publishedAt: new Date(Date.now() - 3600000).toISOString(),
     content: "Medical sources in Gaza report over 200 Palestinians killed since the operation began, including women and children. Israel says it is targeting Hamas command centers and rocket launchers."
   },
@@ -31,7 +49,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "Hezbollah Launches Major Rocket Barrage into Northern Israel from Lebanon",
     description: "The Iran-backed Lebanese militant group says it fired hundreds of rockets at Israeli military positions in retaliation for strikes on Beirut's southern suburbs.",
     url: "https://www.reuters.com/world/middle-east/hezbollah-israel-2026",
-    urlToImage: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/1982_Lebanon_War_map.svg/800px-1982_Lebanon_War_map.svg.png",
     publishedAt: new Date(Date.now() - 7200000).toISOString(),
     content: "Israeli air defense systems intercepted most projectiles, but several struck open areas causing fires. The IDF has responded with artillery and airstrikes on launch sites in southern Lebanon."
   },
@@ -41,7 +59,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "US Air Base in Qatar on High Alert Following Iranian Missile Threat",
     description: "Al Udeid Air Base, the largest American military installation in the Middle East, has raised its force protection level to Charlie amid intelligence of potential Iranian-backed attacks.",
     url: "https://apnews.com/us-military-bases-middle-east",
-    urlToImage: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/US_Navy_030327-N-5363A-002_USS_Abraham_Lincoln_%28CVN_72%29.jpg/800px-US_Navy_030327-N-5363A-002_USS_Abraham_Lincoln_%28CVN_72%29.jpg",
     publishedAt: new Date(Date.now() - 10800000).toISOString(),
     content: "The base, home to over 10,000 US personnel and CENTCOM's forward headquarters, has implemented enhanced security measures including restricted movements and activated air defense systems."
   },
@@ -51,7 +69,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "Iran Warns US Against Further Strikes, Vows 'Painful Response' for Israeli Actions",
     description: "Iran's Supreme Leader issues stern warning to Washington and Tel Aviv following overnight strikes, as regional tensions reach boiling point.",
     url: "https://www.cnn.com/middle-east/iran-warning",
-    urlToImage: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Imam_Khomeini_in_Mehrabad.jpg/800px-Imam_Khomeini_in_Mehrabad.jpg",
     publishedAt: new Date(Date.now() - 14400000).toISOString(),
     content: "In a televised address, the Iranian leadership warned that any further aggression would be met with overwhelming force, while calling on Arab nations to unite against American intervention."
   },
@@ -61,7 +79,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "Pentagon Confirms US Troops Injured in Rocket Attack on Syrian Base",
     description: "Multiple American service members wounded when Iranian-backed militias struck a US outpost in eastern Syria near the Iraqi border, defense officials say.",
     url: "https://www.foxnews.com/us-troops-injured-syria",
-    urlToImage: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Syrian_civil_war_map_%28February_2025%29.svg/800px-Syrian_civil_war_map_%28February_2025%29.svg.png",
     publishedAt: new Date(Date.now() - 18000000).toISOString(),
     content: "The attack on Conoco field base involved multiple rockets, with several personnel sustaining injuries. US forces retaliated with artillery strikes on militia positions."
   },
@@ -71,7 +89,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "IDF Chief: Israel Preparing for Multi-Front War with Iran, Hezbollah, and Hamas",
     description: "Israeli military prepares for worst-case scenario involving simultaneous attacks from Gaza, Lebanon, Syria, and direct Iranian intervention.",
     url: "https://www.haaretz.com/israel-news/idf-multi-front-war",
-    urlToImage: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/1948_Arab_Israeli_War_May_15_-_June_10_1948.png/800px-1948_Arab_Israeli_War_May_15_-_June_10_1948.png",
     publishedAt: new Date(Date.now() - 21600000).toISOString(),
     content: "In a closed-door briefing, the IDF Chief of Staff outlined scenarios where Israel could face attacks from multiple Iranian proxies simultaneously, requiring reserves mobilization."
   },
@@ -81,7 +99,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "US F-22 Raptors Deploy to UAE Base Amid Iran Tensions",
     description: "Stealth fighters arrive at Al Dhafra Air Base as CENTCOM bolster forces in region, sending clear message to Tehran.",
     url: "https://www.thedrive.com/the-war-zone/f22-deploy-uae",
-    urlToImage: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Operation_Desert_Storm%2C_1991.jpg/800px-Operation_Desert_Storm%2C_1991.jpg",
     publishedAt: new Date(Date.now() - 25200000).toISOString(),
     content: "The deployment of fifth-generation fighters significantly enhances US air superiority capabilities in the region, with aircraft capable of penetrating Iranian air defenses."
   },
@@ -91,7 +109,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "Beirut Explodes: Israeli Jets Target Hezbollah Stronghold in Southern Suburbs",
     description: "Massive explosions rock Lebanese capital as Israel strikes what it calls weapons storage facilities, prompting thousands to flee.",
     url: "https://www.bbc.com/news/beirut-strikes",
-    urlToImage: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Beirut_1982.jpg/800px-Beirut_1982.jpg",
     publishedAt: new Date(Date.now() - 28800000).toISOString(),
     content: "Plumes of smoke rose over Dahiyeh district as multiple airstrikes targeted buildings. Hezbollah's Al-Manar TV reported casualties and extensive damage."
   },
@@ -101,7 +119,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "Iran Unveils New Underground Missile Base Near Persian Gulf",
     description: "Revolutionary Guards showcase facility housing long-range missiles capable of reaching US bases and Israel, state TV reports.",
     url: "https://www.reuters.com/iran-missile-base",
-    urlToImage: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Iran-Iraq_war_1980-1988.png/800px-Iran-Iraq_war_1980-1988.png",
     publishedAt: new Date(Date.now() - 32400000).toISOString(),
     content: "The underground facility, carved into mountains near the strategic Strait of Hormuz, contains missile systems with ranges up to 2,000 kilometers."
   },
@@ -111,7 +129,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "US Ambassador to Israel: 'We Stand Ready to Defend Our Ally' as Iran Threatens Retaliation",
     description: "In an exclusive interview, the US ambassador to Israel says American forces are prepared to help defend against any Iranian attack, as tensions escalate following strikes on Iranian facilities.",
     url: "https://www.npr.org/us-israel-iran",
-    urlToImage: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Jerusalem_%28%E2%80%A2_Old_City%29_%289072006436%29.jpg/800px-Jerusalem_%28%E2%80%A2_Old_City%29_%289072006436%29.jpg",
     publishedAt: new Date(Date.now() - 39600000).toISOString(),
     content: "The ambassador's comments come as the Pentagon announces additional naval assets are being moved to the region, including an aircraft carrier strike group."
   },
@@ -121,7 +139,7 @@ const FOCUSED_FALLBACK_NEWS = [
     title: "Lebanon's Economy Crumbles as Cross-Border Attacks Disrupt Trade and Tourism",
     description: "The ongoing conflict between Hezbollah and Israel is taking a severe toll on Lebanon's fragile economy, with businesses closing and tourism grinding to a halt.",
     url: "https://www.theguardian.com/lebanon-economy",
-    urlToImage: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1200&h=800&fit=crop",
+    urlToImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/2006_Lebanon_War_map.svg/800px-2006_Lebanon_War_map.svg.png",
     publishedAt: new Date(Date.now() - 43200000).toISOString(),
     content: "The World Bank warns that Lebanon's GDP could contract by an additional 5% if the current security situation persists, adding to the country's existing economic crisis."
   }
@@ -443,6 +461,7 @@ export const fetchMilitaryBases = async () => {
 
 
 
+<<<<<<< HEAD
 // Historical events with conflict-appropriate images
 // ─── History Data ─────────────────────────────────────────────────────────────
 //
@@ -468,6 +487,22 @@ export const fetchHistoricalEvents = async () => {
       region: "Israel/Palestine",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Declaration_of_State_of_Israel_1948.jpg/800px-Declaration_of_State_of_Israel_1948.jpg",
+=======
+
+
+// Historical events with conflict-appropriate images from Wikimedia Commons
+export const fetchHistoricalEvents = async () => {
+  return [
+    { 
+      year: "1948", 
+      event: "Creation of Israel & Nakba", 
+      description: "Israel declares independence. Over 700,000 Palestinians displaced in what they call the Nakba (catastrophe). First Arab-Israeli war begins.",
+      casualties: "6,000+ military, 3,000+ civilian",
+      significance: "Establishment of Jewish state, beginning of Arab-Israeli conflict, Palestinian refugee crisis",
+      link: "https://en.wikipedia.org/wiki/Israeli_Declaration_of_Independence",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Declaration_of_State_of_Israel_1948.jpg/800px-Declaration_of_State_of_Israel_1948.jpg",
+      region: "Israel/Palestine"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "1956",
@@ -476,11 +511,18 @@ export const fetchHistoricalEvents = async () => {
       description:
         "Egypt nationalizes the Suez Canal under President Nasser. Israel, Britain, and France launch a coordinated invasion. US and Soviet pressure forces a humiliating withdrawal, marking the end of European colonial power in the region.",
       casualties: "3,000+",
+<<<<<<< HEAD
       significance:
         "End of British and French colonial influence; the US emerges as the dominant Western power in the Middle East.",
       region: "Egypt",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Nasser_speeches.jpg/800px-Nasser_speeches.jpg",
+=======
+      significance: "Marked end of British/French colonial influence, US emerges as key Middle East power",
+      link: "https://en.wikipedia.org/wiki/Suez_Crisis",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Suez_Canal_-_El_Qantara_-_pic4.JPG/800px-Suez_Canal_-_El_Qantara_-_pic4.JPG",
+      region: "Egypt"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "1967",
@@ -489,11 +531,18 @@ export const fetchHistoricalEvents = async () => {
       description:
         "Israel launches preemptive air strikes against Egypt, Jordan, and Syria, destroying their air forces on the ground. In six days Israel captures the West Bank, Gaza Strip, Sinai Peninsula, and Golan Heights — tripling its territory.",
       casualties: "20,000+ total",
+<<<<<<< HEAD
       significance:
         "UN Resolution 242 calls for land-for-peace; beginning of Israeli occupation; rise of Palestinian national resistance.",
       region: "Israel, Egypt, Jordan, Syria",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Six_Day_War_Territories.svg/600px-Six_Day_War_Territories.svg.png",
+=======
+      significance: "Territorial expansion, UN Resolution 242, beginning of occupation, rise of Palestinian resistance",
+      link: "https://en.wikipedia.org/wiki/Six-Day_War",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Six-Day_War_Encirclement.svg/800px-Six-Day_War_Encirclement.svg.png",
+      region: "Multiple"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "1973",
@@ -502,11 +551,18 @@ export const fetchHistoricalEvents = async () => {
       description:
         "Egypt and Syria launch a surprise attack on Israel on the holiest day of the Jewish calendar. Israel is caught off guard but recovers with a massive US airlift. The war ends in a UN-brokered ceasefire.",
       casualties: "15,000+ total",
+<<<<<<< HEAD
       significance:
         "Arab oil embargo triggers global energy crisis; peace process begins; leads to 1978 Camp David Accords.",
       region: "Sinai, Golan Heights",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Idf_1973_sinai.jpg/800px-Idf_1973_sinai.jpg",
+=======
+      significance: "Oil embargo, peace process begins, Camp David Accords, OPEC rise",
+      link: "https://en.wikipedia.org/wiki/Yom_Kippur_War",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Israeli_tanks_crossing_the_Suez_Canal_1973.jpg/800px-Israeli_tanks_crossing_the_Suez_Canal_1973.jpg",
+      region: "Sinai, Golan"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "1979",
@@ -515,11 +571,18 @@ export const fetchHistoricalEvents = async () => {
       description:
         "Shah Mohammad Reza Pahlavi is overthrown after mass protests. Ayatollah Khomeini establishes an Islamic Republic. US embassy staff are taken hostage for 444 days, permanently breaking US-Iran relations.",
       casualties: "3,000+",
+<<<<<<< HEAD
       significance:
         "Birth of modern Iran's theocracy; US-Iran hostility begins; Shia political awakening across the region.",
       region: "Iran",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Khomeini_arrives_at_Tehran.jpg/800px-Khomeini_arrives_at_Tehran.jpg",
+=======
+      significance: "US-Iran hostility begins, rise of Shiite power, modern Iran's theocracy",
+      link: "https://en.wikipedia.org/wiki/Iranian_Revolution",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Mehdi_Bazargan_and_Ruhollah_Khomeini.jpg/800px-Mehdi_Bazargan_and_Ruhollah_Khomeini.jpg",
+      region: "Iran"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "1980–1988",
@@ -528,11 +591,18 @@ export const fetchHistoricalEvents = async () => {
       description:
         "Iraq invades Iran in September 1980. The war becomes the longest conventional conflict of the 20th century, fought with trenches, chemical weapons, and mass casualties. It ends in a stalemate with no territorial changes.",
       casualties: "1,000,000+ total",
+<<<<<<< HEAD
       significance:
         "Massive destruction of both economies; chemical weapons used against Kurdish civilians; seeds Iran's and Iraq's post-war trajectories.",
       region: "Iran, Iraq",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Iran_Iraq_war.png/800px-Iran_Iraq_war.png",
+=======
+      significance: "Weakened both nations, US naval intervention in Gulf, chemical weapons use",
+      link: "https://en.wikipedia.org/wiki/Iran%E2%80%93Iraq_War",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Iran-Iraq_war_1980-1988.png/800px-Iran-Iraq_war_1980-1988.png",
+      region: "Iran, Iraq"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "1982",
@@ -541,6 +611,7 @@ export const fetchHistoricalEvents = async () => {
       description:
         "Israel invades Lebanon to expel the PLO following an assassination attempt on its UK ambassador. The siege of Beirut and the Sabra and Shatila massacre by allied Christian militias draws international condemnation.",
       casualties: "20,000+",
+<<<<<<< HEAD
       significance:
         "PLO expelled to Tunisia; Hezbollah is founded with Iranian support; Israeli occupation of southern Lebanon lasts until 2000.",
       region: "Lebanon",
@@ -585,6 +656,82 @@ export const fetchHistoricalEvents = async () => {
       region: "Lebanon, Israel",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Lebanon_War_2006.jpg/800px-Lebanon_War_2006.jpg",
+=======
+      significance: "Hezbollah emerges, Israeli occupation of southern Lebanon until 2000",
+      link: "https://en.wikipedia.org/wiki/1982_Lebanon_War",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/1982_Lebanon_War_map.svg/800px-1982_Lebanon_War_map.svg.png",
+      region: "Lebanon"
+    },
+    { 
+      year: "1987-1993", 
+      event: "First Intifada", 
+      description: "Palestinian uprising against Israeli occupation in Gaza and West Bank. Mass protests, civil disobedience, and clashes.",
+      casualties: "2,000+",
+      significance: "Rise of Hamas, Oslo Accords, PLO recognition of Israel",
+      link: "https://en.wikipedia.org/wiki/First_Intifada",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/First_Intifada_%28005%29.jpg/800px-First_Intifada_%28005%29.jpg",
+      region: "Palestine"
+    },
+    { 
+      year: "1990-1991", 
+      event: "Gulf War", 
+      description: "US leads 35-nation coalition to liberate Kuwait from Iraqi invasion. Operation Desert Storm uses overwhelming force.",
+      casualties: "40,000+ Iraqi, 300 coalition",
+      significance: "US bases established in Saudi Arabia, no-fly zones over Iraq, Saddam remains in power",
+      link: "https://en.wikipedia.org/wiki/Gulf_War",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Operation_Desert_Storm%2C_1991.jpg/800px-Operation_Desert_Storm%2C_1991.jpg",
+      region: "Kuwait, Iraq"
+    },
+    { 
+      year: "1993", 
+      event: "Oslo Accords", 
+      description: "Israel and PLO sign Declaration of Principles. Mutual recognition, Palestinian Authority established.",
+      casualties: "N/A",
+      significance: "Peace process framework, Rabin assassination, final status issues unresolved",
+      link: "https://en.wikipedia.org/wiki/Oslo_Accords",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Clinton_Rabin_Arafat_1993-09-13.jpg/800px-Clinton_Rabin_Arafat_1993-09-13.jpg",
+      region: "Israel, Palestine"
+    },
+    { 
+      year: "2000-2005", 
+      event: "Second Intifada", 
+      description: "Palestinian uprising triggered by Sharon's visit to Temple Mount. Suicide bombings, Israeli reoccupation of West Bank cities.",
+      casualties: "6,000+",
+      significance: "Separation barrier built, peace process collapses, Hamas rises",
+      link: "https://en.wikipedia.org/wiki/Second_Intifada",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Second_Intifada_montage.jpg/800px-Second_Intifada_montage.jpg",
+      region: "Palestine, Israel"
+    },
+    { 
+      year: "2003-2011", 
+      event: "Iraq War", 
+      description: "US-led invasion based on WMD claims, Saddam Hussein overthrown. Insurgency and civil war follow. US withdraws 2011.",
+      casualties: "500,000+ total, 4,500+ US troops",
+      significance: "Rise of ISIS, Iranian influence expands, regional instability, Shia-led government",
+      link: "https://en.wikipedia.org/wiki/Iraq_War",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/US_Navy_030327-N-5363A-002_USS_Abraham_Lincoln_%28CVN_72%29.jpg/800px-US_Navy_030327-N-5363A-002_USS_Abraham_Lincoln_%28CVN_72%29.jpg",
+      region: "Iraq"
+    },
+    { 
+      year: "2005", 
+      event: "Israel Withdraws from Gaza", 
+      description: "Israel unilaterally disengages, removing all settlers and military from Gaza Strip. Hamas wins elections 2006.",
+      casualties: "N/A",
+      significance: "Hamas takes control 2007, blockade begins, rocket attacks increase",
+      link: "https://en.wikipedia.org/wiki/Israeli_disengagement_from_Gaza",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Gaza_Strip_October_2023.svg/800px-Gaza_Strip_October_2023.svg.png",
+      region: "Gaza"
+    },
+    { 
+      year: "2006", 
+      event: "Second Lebanon War", 
+      description: "Hezbollah captures Israeli soldiers, triggering 34-day war. Massive Israeli airstrikes on Lebanon, Hezbollah rocket attacks on Israel.",
+      casualties: "1,500+",
+      significance: "Hezbollah gains prestige, UNIFIL expanded, stalemate",
+      link: "https://en.wikipedia.org/wiki/2006_Lebanon_War",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/2006_Lebanon_War_map.svg/800px-2006_Lebanon_War_map.svg.png",
+      region: "Lebanon, Israel"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "2008–2009",
@@ -593,6 +740,7 @@ export const fetchHistoricalEvents = async () => {
       description:
         "Israel launches a 22-day military operation in the Gaza Strip to stop Hamas rocket fire. Extensive destruction of civilian infrastructure draws widespread international condemnation.",
       casualties: "1,400+ Palestinians, 13 Israelis",
+<<<<<<< HEAD
       significance:
         "Blockade of Gaza continues; Hamas retains political and military control of the strip.",
       region: "Gaza",
@@ -611,6 +759,22 @@ export const fetchHistoricalEvents = async () => {
       region: "Syria",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Aleppo_during_the_Syrian_Civil_War.jpg/800px-Aleppo_during_the_Syrian_Civil_War.jpg",
+=======
+      significance: "Blockade of Gaza continues, Hamas retains control",
+      link: "https://en.wikipedia.org/wiki/Gaza_War_(2008%E2%80%932009)",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Gaza_Strip_map2.svg/800px-Gaza_Strip_map2.svg.png",
+      region: "Gaza"
+    },
+    { 
+      year: "2011-2020", 
+      event: "Syrian Civil War", 
+      description: "Protests turn into multi-sided conflict with ISIS, Assad regime, rebels, and foreign powers including Russia, Iran, US, Turkey.",
+      casualties: "600,000+ total, 13 million displaced",
+      significance: "Refugee crisis, rise of ISIS, Russian intervention, Iranian expansion",
+      link: "https://en.wikipedia.org/wiki/Syrian_civil_war",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Syrian_civil_war_map_%28February_2025%29.svg/800px-Syrian_civil_war_map_%28February_2025%29.svg.png",
+      region: "Syria"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "2014",
@@ -619,11 +783,18 @@ export const fetchHistoricalEvents = async () => {
       description:
         "A 50-day conflict between Israel and Hamas, triggered by the kidnapping and murder of three Israeli teenagers. Israel targets Hamas tunnel infrastructure; Gaza suffers extensive civilian casualties and destruction.",
       casualties: "2,200+ Palestinians, 73 Israelis",
+<<<<<<< HEAD
       significance:
         "Cross-border tunnel network exposed; UN facilities bombed; ceasefire leaves underlying tensions unresolved.",
       region: "Gaza",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Gaza_2014_war.jpg/800px-Gaza_2014_war.jpg",
+=======
+      significance: "Tunnel threat emerges, UN schools bombed",
+      link: "https://en.wikipedia.org/wiki/2014_Gaza_War",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Gaza_Strip_destruction_2014.jpg/800px-Gaza_Strip_destruction_2014.jpg",
+      region: "Gaza"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "2015",
@@ -632,11 +803,18 @@ export const fetchHistoricalEvents = async () => {
       description:
         "After years of negotiations, the P5+1 powers sign the JCPOA with Iran, limiting its nuclear enrichment in exchange for sanctions relief. President Trump withdraws the US from the deal in 2018, triggering Iranian escalation.",
       casualties: "N/A",
+<<<<<<< HEAD
       significance:
         "Landmark diplomatic agreement; US withdrawal in 2018 accelerates Iran's nuclear programme to near-weapons-grade levels.",
       region: "Iran",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Iran_nuclear_deal_signing.jpg/800px-Iran_nuclear_deal_signing.jpg",
+=======
+      significance: "Diplomatic breakthrough, US withdraws 2018, tensions escalate",
+      link: "https://en.wikipedia.org/wiki/Joint_Comprehensive_Plan_of_Action",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Clinton_Rabin_Arafat_1993-09-13.jpg/800px-Clinton_Rabin_Arafat_1993-09-13.jpg",
+      region: "Iran"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "2017–2021",
@@ -645,11 +823,18 @@ export const fetchHistoricalEvents = async () => {
       description:
         "The Trump administration formally recognizes Jerusalem as Israel's capital and moves the US embassy from Tel Aviv. Palestinians respond with mass protests along the Gaza border fence, resulting in over 200 deaths.",
       casualties: "200+ Palestinians killed in protests",
+<<<<<<< HEAD
       significance:
         "Dramatic shift in decades of US policy; Palestinian Authority freezes relations with the US; widespread international criticism.",
       region: "Jerusalem",
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/US_Embassy_Jerusalem_2018.jpg/800px-US_Embassy_Jerusalem_2018.jpg",
+=======
+      significance: "Shift in US policy, Palestinian Authority cuts ties",
+      link: "https://en.wikipedia.org/wiki/United_States_recognition_of_Jerusalem_as_capital_of_Israel",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Jerusalem_%28%E2%80%A2_Old_City%29_%289072006436%29.jpg/800px-Jerusalem_%28%E2%80%A2_Old_City%29_%289072006436%29.jpg",
+      region: "Jerusalem"
+>>>>>>> 5b51205 (map updation)
     },
     {
       year: "2020",
@@ -658,6 +843,7 @@ export const fetchHistoricalEvents = async () => {
       description:
         "The UAE, Bahrain, Morocco, and Sudan normalize diplomatic relations with Israel in US-brokered agreements — the first Arab-Israeli normalization in 26 years, breaking the Arab consensus that peace required Palestinian statehood first.",
       casualties: "N/A",
+<<<<<<< HEAD
       significance:
         "Reshaping of Middle East alliances; Palestinian cause sidelined; strategic alignment against Iran.",
       region: "UAE, Bahrain, Israel",
@@ -716,5 +902,53 @@ export const fetchHistoricalEvents = async () => {
       image:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Iron_Dome_intercepts_2024.jpg/800px-Iron_Dome_intercepts_2024.jpg",
     },
+=======
+      significance: "Shift in Middle East alliances, Palestinian cause sidelined",
+      link: "https://en.wikipedia.org/wiki/Abraham_Accords",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Clinton_Rabin_Arafat_1993-09-13.jpg/800px-Clinton_Rabin_Arafat_1993-09-13.jpg",
+      region: "UAE, Bahrain, Israel"
+    },
+    { 
+      year: "2020", 
+      event: "US Kills Soleimani", 
+      description: "US drone strike kills Iranian General Qasem Soleimani in Baghdad. Iran retaliates with missile strike on US base in Iraq.",
+      casualties: "Several",
+      significance: "Major escalation, near-war situation",
+      link: "https://en.wikipedia.org/wiki/Assassination_of_Qasem_Soleimani",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Iran-Iraq_war_1980-1988.png/800px-Iran-Iraq_war_1980-1988.png",
+      region: "Iraq, Iran"
+    },
+    { 
+      year: "2021", 
+      event: "May 2021 Israel-Gaza War", 
+      description: "11-day conflict triggered by Jerusalem tensions. Heavy rocket fire and airstrikes.",
+      casualties: "250+ Palestinians, 13 Israelis",
+      significance: "Intercommunal violence in Israel, regional reactions",
+      link: "https://en.wikipedia.org/wiki/2021_Israel%E2%80%93Palestine_crisis",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Gaza_Strip_May_2021_attacks.jpg/800px-Gaza_Strip_May_2021_attacks.jpg",
+      region: "Gaza, Israel"
+    },
+    { 
+      year: "2023-2026", 
+      event: "Israel-Gaza War", 
+      description: "Ongoing conflict with regional implications. Multiple ceasefires attempted. Humanitarian crisis in Gaza.",
+      casualties: "50,000+ total, mostly civilians",
+      significance: "Regional escalation, US naval deployment, Iran-backed groups involved",
+      link: "https://en.wikipedia.org/wiki/Israel%E2%80%93Hamas_war",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Gaza_Strip_October_2023.svg/800px-Gaza_Strip_October_2023.svg.png",
+      region: "Gaza, Israel"
+    },
+    { 
+      year: "2024", 
+      event: "Iran-Israel Direct Conflict", 
+      description: "Iran launches direct missile and drone attack on Israel for first time. Israel strikes Iranian facilities.",
+      casualties: "Limited",
+      significance: "New era of direct confrontation, Arab states help defend Israel",
+      link: "https://en.wikipedia.org/wiki/2024_Iran%E2%80%93Israel_conflict",
+      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Iran-Iraq_war_1980-1988.png/800px-Iran-Iraq_war_1980-1988.png",
+      region: "Iran, Israel"
+    }
+>>>>>>> 5b51205 (map updation)
   ];
 };
+

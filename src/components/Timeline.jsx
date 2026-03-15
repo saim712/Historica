@@ -6,7 +6,11 @@ import {
   UserGroupIcon,
   ArrowTopRightOnSquareIcon,
   XMarkIcon,
+<<<<<<< HEAD
   InformationCircleIcon,
+=======
+  PhotoIcon
+>>>>>>> 5b51205 (map updation)
 } from '@heroicons/react/24/outline';
 
 // ─── Wikipedia helpers ────────────────────────────────────────────────────────
@@ -323,17 +327,25 @@ const EventModal = ({ event, onClose }) => {
 const Timeline = ({ events = [] }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [filter, setFilter] = useState('all');
+<<<<<<< HEAD
 
   const regions = [
     'all',
     ...new Set(events.map((e) => e.region).filter(Boolean)),
   ];
+=======
+  const [imageErrors, setImageErrors] = useState({});
+  const [imageLoading, setImageLoading] = useState({});
+
+  const regions = ['all', ...new Set(events.map(e => e.region).filter(Boolean))];
+>>>>>>> 5b51205 (map updation)
 
   const visible =
     filter === 'all'
       ? events
       : events.filter((e) => e.region === filter);
 
+<<<<<<< HEAD
   if (!events.length) {
     return (
       <div className="timeline-empty">
@@ -345,6 +357,421 @@ const Timeline = ({ events = [] }) => {
   return (
     <div className="timeline-wrapper">
       {/* Header */}
+=======
+  const handleImageError = (eventId) => {
+    setImageErrors(prev => ({ ...prev, [eventId]: true }));
+    setImageLoading(prev => ({ ...prev, [eventId]: false }));
+  };
+
+  const handleImageLoad = (eventId) => {
+    setImageLoading(prev => ({ ...prev, [eventId]: false }));
+  };
+
+  const handleImageLoadStart = (eventId) => {
+    setImageLoading(prev => ({ ...prev, [eventId]: true }));
+  };
+
+  // Generate SVG placeholder
+  const getSvgPlaceholder = (event) => {
+    const colors = {
+      'Israel/Palestine': '#4f46e5',
+      'Palestine': '#16a34a',
+      'Iran': '#dc2626',
+      'Iraq': '#b45309',
+      'Syria': '#7c3aed',
+      'Lebanon': '#0891b2',
+      'Egypt': '#b45309',
+      'Gaza': '#dc2626',
+      'Multiple': '#8b5cf6',
+      'default': '#4f46e5'
+    };
+    
+    const color = colors[event.region] || colors.default;
+    
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+      <rect width="800" height="400" fill="#1e293b"/>
+      <rect x="300" y="120" width="200" height="100" rx="8" fill="${color}" opacity="0.2"/>
+      <text x="400" y="180" font-family="Arial" font-size="28" fill="${color}" text-anchor="middle" font-weight="bold">${event.year}</text>
+      <text x="400" y="240" font-family="Arial" font-size="16" fill="#94a3b8" text-anchor="middle" max-width="600">${event.event.substring(0, 40)}</text>
+      <text x="400" y="280" font-family="Arial" font-size="14" fill="#64748b" text-anchor="middle">${event.region}</text>
+    </svg>`;
+    
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  };
+
+  // Get image with error handling
+  const getEventImage = (event) => {
+    const eventId = `${event.year}_${event.event}`;
+    if (imageErrors[eventId]) {
+      return getSvgPlaceholder(event);
+    }
+    return event.image;
+  };
+
+  return (
+    <div className="timeline-wrapper">
+      <style>{`
+        .timeline-wrapper {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 2rem 1rem;
+        }
+        
+        .timeline-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 3rem;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+        
+        .timeline-header h2 {
+          font-size: 2rem;
+          font-weight: 700;
+          margin: 0;
+          background: linear-gradient(135deg, #60a5fa, #8b5cf6);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        
+        .timeline-filters select {
+          padding: 0.75rem 2rem 0.75rem 1rem;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 0.5rem;
+          color: var(--text);
+          font-size: 0.9rem;
+          cursor: pointer;
+          outline: none;
+        }
+        
+        .timeline-filters select:hover {
+          border-color: var(--primary);
+        }
+        
+        .timeline-container {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+        }
+        
+        .timeline-container::before {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 2px;
+          background: linear-gradient(to bottom, var(--border), var(--primary), var(--border));
+          transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+          position: relative;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+        
+        .timeline-marker {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          background: var(--primary);
+          color: white;
+          padding: 0.5rem 1rem;
+          border-radius: 2rem;
+          font-size: 0.9rem;
+          font-weight: 600;
+          z-index: 2;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+          white-space: nowrap;
+        }
+        
+        .timeline-card {
+          width: calc(50% - 3rem);
+          margin: 3rem 0;
+          background: var(--surface);
+          border-radius: 1rem;
+          overflow: hidden;
+          border: 1px solid var(--border);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          position: relative;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-card {
+          margin-left: auto;
+        }
+        
+        .timeline-card:hover {
+          transform: translateY(-4px);
+          border-color: var(--primary);
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .timeline-image-container {
+          position: relative;
+          width: 100%;
+          height: 200px;
+          overflow: hidden;
+          background: var(--bg);
+        }
+        
+        .timeline-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s;
+        }
+        
+        .timeline-card:hover .timeline-image {
+          transform: scale(1.05);
+        }
+        
+        .timeline-image-overlay {
+          position: absolute;
+          top: 1rem;
+          left: 1rem;
+          display: flex;
+          align-items: center;
+          pointer-events: none;
+        }
+        
+        .region-badge {
+          background: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(4px);
+          color: white;
+          padding: 0.25rem 0.75rem;
+          border-radius: 2rem;
+          font-size: 0.8rem;
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-card-content {
+          padding: 1.5rem;
+        }
+        
+        .timeline-card-content h3 {
+          font-size: 1.2rem;
+          font-weight: 600;
+          margin: 0 0 0.75rem 0;
+          color: var(--text);
+        }
+        
+        .timeline-description {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+          margin: 0 0 1rem 0;
+          line-height: 1.6;
+        }
+        
+        .timeline-stats {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+        
+        .timeline-stat {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          font-size: 0.85rem;
+          color: var(--text-muted);
+        }
+        
+        .icon-small {
+          width: 1rem;
+          height: 1rem;
+        }
+        
+        .read-more-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.5rem 1rem;
+          background: var(--primary);
+          color: white;
+          border: none;
+          border-radius: 0.5rem;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        
+        .read-more-btn:hover {
+          background: var(--primary-dark);
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.75);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          z-index: 1000;
+        }
+        
+        .modal-content {
+          background: var(--surface);
+          border-radius: 1.5rem;
+          max-width: 800px;
+          width: 100%;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          border: 1px solid var(--border);
+        }
+        
+        .modal-close {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: rgba(0, 0, 0, 0.5);
+          border: none;
+          border-radius: 50%;
+          width: 2.5rem;
+          height: 2.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: white;
+          z-index: 10;
+          backdrop-filter: blur(4px);
+          transition: background 0.2s;
+        }
+        
+        .modal-close:hover {
+          background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .modal-image-container {
+          width: 100%;
+          height: 300px;
+          overflow: hidden;
+          position: relative;
+          background: var(--bg);
+        }
+        
+        .modal-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        
+        .modal-body {
+          padding: 2rem;
+        }
+        
+        .modal-body h2 {
+          font-size: 1.8rem;
+          font-weight: 700;
+          margin: 0 0 0.25rem 0;
+          color: var(--text);
+        }
+        
+        .modal-year {
+          font-size: 1rem;
+          color: var(--primary);
+          margin: 0 0 1rem 0;
+        }
+        
+        .modal-description {
+          font-size: 1rem;
+          line-height: 1.7;
+          color: var(--text-muted);
+          margin: 0 0 2rem 0;
+        }
+        
+        .modal-details {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1.5rem;
+          margin-bottom: 2rem;
+        }
+        
+        .modal-detail {
+          display: flex;
+          gap: 0.75rem;
+        }
+        
+        .modal-detail .icon {
+          width: 1.5rem;
+          height: 1.5rem;
+          color: var(--primary);
+          flex-shrink: 0;
+        }
+        
+        .modal-detail h4 {
+          font-size: 0.9rem;
+          font-weight: 600;
+          margin: 0 0 0.25rem 0;
+          color: var(--text);
+        }
+        
+        .modal-detail p {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+          margin: 0;
+        }
+        
+        .modal-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          background: var(--primary);
+          color: white;
+          text-decoration: none;
+          border-radius: 0.75rem;
+          font-weight: 600;
+          transition: all 0.2s;
+        }
+        
+        .modal-link:hover {
+          background: var(--primary-dark);
+          transform: translateY(-2px);
+        }
+        
+        .image-loading {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--bg);
+          color: var(--text-muted);
+        }
+        
+        @media (max-width: 768px) {
+          .timeline-container::before {
+            left: 2rem;
+          }
+          
+          .timeline-marker {
+            left: 2rem;
+            transform: translateX(0);
+          }
+          
+          .timeline-card {
+            width: calc(100% - 4rem);
+            margin-left: 4rem !important;
+          }
+        }
+      `}</style>
+
+>>>>>>> 5b51205 (map updation)
       <div className="timeline-header">
         <h2>Middle East Conflict Timeline</h2>
         <div className="timeline-filters">
@@ -365,6 +792,7 @@ const Timeline = ({ events = [] }) => {
 
       {/* Cards */}
       <div className="timeline-container">
+<<<<<<< HEAD
         {visible.map((event, index) => (
           <EventCard
             key={`${event.year}_${event.event}`}
@@ -373,15 +801,179 @@ const Timeline = ({ events = [] }) => {
             onSelect={setSelectedEvent}
           />
         ))}
+=======
+        {filteredEvents.map((event, index) => {
+          const eventId = `${event.year}_${event.event}`;
+          const imageUrl = getEventImage(event);
+          
+          return (
+            <motion.div 
+              key={index}
+              className="timeline-item"
+              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 }}
+            >
+              <div className="timeline-marker">
+                <span>{event.year}</span>
+              </div>
+              
+              <div 
+                className="timeline-card"
+                onClick={() => setSelectedEvent(event)}
+              >
+                <div className="timeline-image-container">
+                  {imageLoading[eventId] && !imageErrors[eventId] && (
+                    <div className="image-loading">
+                      <PhotoIcon className="icon" style={{ width: '2rem', height: '2rem' }} />
+                    </div>
+                  )}
+                  <img 
+                    src={imageUrl} 
+                    alt={event.event} 
+                    className="timeline-image"
+                    onError={() => handleImageError(eventId)}
+                    onLoad={() => handleImageLoad(eventId)}
+                    onLoadStart={() => handleImageLoadStart(eventId)}
+                    loading="lazy"
+                    style={{ 
+                      opacity: imageLoading[eventId] && !imageErrors[eventId] ? 0 : 1
+                    }}
+                  />
+                  <div className="timeline-image-overlay">
+                    <span className="region-badge">
+                      <MapPinIcon className="icon-small" />
+                      {event.region}
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="timeline-card-content">
+                  <h3>{event.event}</h3>
+                  <p className="timeline-description">
+                    {event.description.length > 120 
+                      ? `${event.description.substring(0, 120)}...` 
+                      : event.description}
+                  </p>
+                  
+                  <div className="timeline-stats">
+                    {event.casualties && event.casualties !== 'N/A' && (
+                      <div className="timeline-stat">
+                        <UserGroupIcon className="icon-small" />
+                        <span>
+                          {typeof event.casualties === 'string' 
+                            ? event.casualties.split(' ')[0] 
+                            : event.casualties}
+                          {!event.casualties.includes('+') ? '+' : ''}
+                        </span>
+                      </div>
+                    )}
+                    
+                    <div className="timeline-stat">
+                      <CalendarIcon className="icon-small" />
+                      <span>{event.year}</span>
+                    </div>
+                  </div>
+
+                  <button className="read-more-btn">
+                    Read More
+                    <ArrowTopRightOnSquareIcon className="icon-small" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+>>>>>>> 5b51205 (map updation)
       </div>
 
       {/* Modal */}
       <AnimatePresence>
         {selectedEvent && (
+<<<<<<< HEAD
           <EventModal
             event={selectedEvent}
             onClose={() => setSelectedEvent(null)}
           />
+=======
+          <motion.div 
+            className="modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedEvent(null)}
+          >
+            <motion.div 
+              className="modal-content"
+              initial={{ scale: 0.8, y: 50 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.8, y: 50 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                className="modal-close"
+                onClick={() => setSelectedEvent(null)}
+              >
+                <XMarkIcon className="icon" />
+              </button>
+
+              <div className="modal-image-container">
+                <img 
+                  src={getEventImage(selectedEvent)} 
+                  alt={selectedEvent.event}
+                  className="modal-image"
+                  onError={() => handleImageError(`${selectedEvent.year}_${selectedEvent.event}`)}
+                />
+              </div>
+
+              <div className="modal-body">
+                <h2>{selectedEvent.event}</h2>
+                <p className="modal-year">{selectedEvent.year}</p>
+                <p className="modal-description">{selectedEvent.description}</p>
+
+                <div className="modal-details">
+                  {selectedEvent.casualties && selectedEvent.casualties !== 'N/A' && (
+                    <div className="modal-detail">
+                      <UserGroupIcon className="icon" />
+                      <div>
+                        <h4>Casualties</h4>
+                        <p>{selectedEvent.casualties}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="modal-detail">
+                    <MapPinIcon className="icon" />
+                    <div>
+                      <h4>Region</h4>
+                      <p>{selectedEvent.region}</p>
+                    </div>
+                  </div>
+
+                  {selectedEvent.significance && (
+                    <div className="modal-detail">
+                      <CalendarIcon className="icon" />
+                      <div>
+                        <h4>Significance</h4>
+                        <p>{selectedEvent.significance}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <a 
+                  href={selectedEvent.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="modal-link"
+                >
+                  Learn More on Wikipedia
+                  <ArrowTopRightOnSquareIcon className="icon-small" />
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+>>>>>>> 5b51205 (map updation)
         )}
       </AnimatePresence>
     </div>
