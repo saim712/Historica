@@ -47,15 +47,21 @@ const NewsCard = ({ article, featured }) => {
     return text.substr(0, maxLength) + '...';
   };
 
-  // Conflict-specific placeholder images
+  // Generate a contextual placeholder image when the article does not provide one
   const getPlaceholderImage = () => {
-    const placeholders = [
-      'https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=800&h=500&fit=crop',
-      'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=800&h=500&fit=crop'
-    ];
-    return placeholders[Math.floor(Math.random() * placeholders.length)];
+    const keywords = [
+      article.category?.name,
+      article.region,
+      article.source?.name,
+      article.title
+    ].filter(Boolean).join(' ');
+
+    // Unsplash provides a random photo matching the query terms
+    const query = encodeURIComponent(keywords || 'world news');
+    return `https://source.unsplash.com/800x500/?${query}`;
   };
+
+  const imageSrc = !imageError && article.urlToImage ? article.urlToImage : getPlaceholderImage();
 
   return (
     <motion.article 
@@ -67,20 +73,13 @@ const NewsCard = ({ article, featured }) => {
     >
       {/* Image Section */}
       <div className="news-image-wrapper">
-        {!imageError && article.urlToImage ? (
-          <img 
-            src={article.urlToImage} 
-            alt={article.title}
-            className="news-image"
-            onError={() => setImageError(true)}
-            loading="lazy"
-          />
-        ) : (
-          <div className="news-image-placeholder">
-            <span className="placeholder-icon">{getCategoryIcon(article.category)}</span>
-            <span className="placeholder-text">{article.category?.name || 'News'}</span>
-          </div>
-        )}
+        <img 
+          src={imageSrc} 
+          alt={article.title}
+          className="news-image"
+          onError={() => setImageError(true)}
+          loading="lazy"
+        />
         
         {/* Image Overlay Badges */}
         <div className="news-image-overlay">

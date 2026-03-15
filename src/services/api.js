@@ -436,208 +436,285 @@ export const fetchMilitaryBases = async () => {
   ];
 };
 
+
+
+
+
+
+
+
 // Historical events with conflict-appropriate images
+// ─── History Data ─────────────────────────────────────────────────────────────
+//
+// Each event has:
+//   wikiSlug  — exact Wikipedia article slug (used by REST API + "Read More" link)
+//   image     — verified Wikimedia Commons direct URL (instant fallback)
+//
+// Wikipedia article URL = https://en.wikipedia.org/wiki/{wikiSlug}
+// Wikipedia API call   = https://en.wikipedia.org/api/rest_v1/page/summary/{wikiSlug}
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const fetchHistoricalEvents = async () => {
   return [
-    { 
-      year: "1948", 
-      event: "Creation of Israel & Nakba", 
-      description: "Israel declares independence. Over 700,000 Palestinians displaced in what they call the Nakba (catastrophe). First Arab-Israeli war begins.",
-      casualties: "6,000+ military, 3,000+ civilian",
-      significance: "Establishment of Jewish state, beginning of Arab-Israeli conflict, Palestinian refugee crisis",
-      link: "https://en.wikipedia.org/wiki/Israeli_Declaration_of_Independence",
-      image: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop",
-      region: "Israel/Palestine"
+    {
+      year: "1948",
+      event: "Creation of Israel & Nakba",
+      wikiSlug: "1948_Arab%E2%80%93Israeli_War",
+      description:
+        "Israel declares independence on 14 May 1948. Over 700,000 Palestinians are displaced in what they call the Nakba (catastrophe). Neighbouring Arab states immediately declare war; Israel survives and expands beyond the UN partition borders.",
+      casualties: "6,000+ Israeli, 15,000+ Arab",
+      significance:
+        "Establishment of the Jewish state, beginning of the Arab-Israeli conflict, Palestinian refugee crisis that persists to this day.",
+      region: "Israel/Palestine",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Declaration_of_State_of_Israel_1948.jpg/800px-Declaration_of_State_of_Israel_1948.jpg",
     },
-    { 
-      year: "1956", 
-      event: "Suez Crisis", 
-      description: "Israel, UK, and France invade Egypt after Nasser nationalizes Suez Canal. US pressure forces withdrawal.",
+    {
+      year: "1956",
+      event: "Suez Crisis",
+      wikiSlug: "Suez_Crisis",
+      description:
+        "Egypt nationalizes the Suez Canal under President Nasser. Israel, Britain, and France launch a coordinated invasion. US and Soviet pressure forces a humiliating withdrawal, marking the end of European colonial power in the region.",
       casualties: "3,000+",
-      significance: "Marked end of British/French colonial influence, US emerges as key Middle East power",
-      link: "https://en.wikipedia.org/wiki/Suez_Crisis",
-      image: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop",
-      region: "Egypt"
+      significance:
+        "End of British and French colonial influence; the US emerges as the dominant Western power in the Middle East.",
+      region: "Egypt",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Nasser_speeches.jpg/800px-Nasser_speeches.jpg",
     },
-    { 
-      year: "1967", 
-      event: "Six-Day War", 
-      description: "Israel launches preemptive strikes against Egypt, Jordan, Syria. Captures West Bank, Gaza, Golan Heights, Sinai Peninsula.",
+    {
+      year: "1967",
+      event: "Six-Day War",
+      wikiSlug: "Six-Day_War",
+      description:
+        "Israel launches preemptive air strikes against Egypt, Jordan, and Syria, destroying their air forces on the ground. In six days Israel captures the West Bank, Gaza Strip, Sinai Peninsula, and Golan Heights — tripling its territory.",
       casualties: "20,000+ total",
-      significance: "Territorial expansion, UN Resolution 242, beginning of occupation, rise of Palestinian resistance",
-      link: "https://en.wikipedia.org/wiki/Six-Day_War",
-      image: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop",
-      region: "Multiple"
+      significance:
+        "UN Resolution 242 calls for land-for-peace; beginning of Israeli occupation; rise of Palestinian national resistance.",
+      region: "Israel, Egypt, Jordan, Syria",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Six_Day_War_Territories.svg/600px-Six_Day_War_Territories.svg.png",
     },
-    { 
-      year: "1973", 
-      event: "Yom Kippur War", 
-      description: "Egypt and Syria launch surprise attack on Israel during Jewish holy day. Israel recovers with US airlift.",
+    {
+      year: "1973",
+      event: "Yom Kippur War",
+      wikiSlug: "Yom_Kippur_War",
+      description:
+        "Egypt and Syria launch a surprise attack on Israel on the holiest day of the Jewish calendar. Israel is caught off guard but recovers with a massive US airlift. The war ends in a UN-brokered ceasefire.",
       casualties: "15,000+ total",
-      significance: "Oil embargo, peace process begins, Camp David Accords, OPEC rise",
-      link: "https://en.wikipedia.org/wiki/Yom_Kippur_War",
-      image: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop",
-      region: "Sinai, Golan"
+      significance:
+        "Arab oil embargo triggers global energy crisis; peace process begins; leads to 1978 Camp David Accords.",
+      region: "Sinai, Golan Heights",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Idf_1973_sinai.jpg/800px-Idf_1973_sinai.jpg",
     },
-    { 
-      year: "1979", 
-      event: "Iranian Revolution & Hostage Crisis", 
-      description: "Shah overthrown, Islamic Republic established under Ayatollah Khomeini. US embassy hostages taken for 444 days.",
+    {
+      year: "1979",
+      event: "Iranian Revolution & Hostage Crisis",
+      wikiSlug: "Iranian_Revolution",
+      description:
+        "Shah Mohammad Reza Pahlavi is overthrown after mass protests. Ayatollah Khomeini establishes an Islamic Republic. US embassy staff are taken hostage for 444 days, permanently breaking US-Iran relations.",
       casualties: "3,000+",
-      significance: "US-Iran hostility begins, rise of Shiite power, modern Iran's theocracy",
-      link: "https://en.wikipedia.org/wiki/Iranian_Revolution",
-      image: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop",
-      region: "Iran"
+      significance:
+        "Birth of modern Iran's theocracy; US-Iran hostility begins; Shia political awakening across the region.",
+      region: "Iran",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Khomeini_arrives_at_Tehran.jpg/800px-Khomeini_arrives_at_Tehran.jpg",
     },
-    { 
-      year: "1980-1988", 
-      event: "Iran-Iraq War", 
-      description: "Longest conventional war of 20th century, ends in stalemate. US supports Iraq with intelligence and weapons.",
+    {
+      year: "1980–1988",
+      event: "Iran-Iraq War",
+      wikiSlug: "Iran%E2%80%93Iraq_War",
+      description:
+        "Iraq invades Iran in September 1980. The war becomes the longest conventional conflict of the 20th century, fought with trenches, chemical weapons, and mass casualties. It ends in a stalemate with no territorial changes.",
       casualties: "1,000,000+ total",
-      significance: "Weakened both nations, US naval intervention in Gulf, chemical weapons use",
-      link: "https://en.wikipedia.org/wiki/Iran%E2%80%93Iraq_War",
-      image: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop",
-      region: "Iran, Iraq"
+      significance:
+        "Massive destruction of both economies; chemical weapons used against Kurdish civilians; seeds Iran's and Iraq's post-war trajectories.",
+      region: "Iran, Iraq",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Iran_Iraq_war.png/800px-Iran_Iraq_war.png",
     },
-    { 
-      year: "1982", 
-      event: "First Lebanon War", 
-      description: "Israel invades Lebanon to expel PLO. Siege of Beirut, Sabra and Shatila massacre by Christian militias.",
+    {
+      year: "1982",
+      event: "First Lebanon War",
+      wikiSlug: "1982_Lebanon_War",
+      description:
+        "Israel invades Lebanon to expel the PLO following an assassination attempt on its UK ambassador. The siege of Beirut and the Sabra and Shatila massacre by allied Christian militias draws international condemnation.",
       casualties: "20,000+",
-      significance: "Hezbollah emerges, Israeli occupation of southern Lebanon until 2000",
-      link: "https://en.wikipedia.org/wiki/1982_Lebanon_War",
-      image: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop",
-      region: "Lebanon"
+      significance:
+        "PLO expelled to Tunisia; Hezbollah is founded with Iranian support; Israeli occupation of southern Lebanon lasts until 2000.",
+      region: "Lebanon",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Beirut_1982.jpg/800px-Beirut_1982.jpg",
     },
-    { 
-      year: "1990-1991", 
-      event: "Gulf War", 
-      description: "US leads 35-nation coalition to liberate Kuwait from Iraqi invasion. Operation Desert Storm uses overwhelming force.",
-      casualties: "40,000+ Iraqi, 300 coalition",
-      significance: "US bases established in Saudi Arabia, no-fly zones over Iraq, Saddam remains in power",
-      link: "https://en.wikipedia.org/wiki/Gulf_War",
-      image: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop",
-      region: "Kuwait, Iraq"
+    {
+      year: "1990–1991",
+      event: "Gulf War",
+      wikiSlug: "Gulf_War",
+      description:
+        "Iraq invades Kuwait in August 1990. A US-led coalition of 35 nations launches Operation Desert Storm, liberating Kuwait in 100 hours of ground combat. Saddam Hussein remains in power under strict sanctions.",
+      casualties: "40,000+ Iraqi military, 300 coalition",
+      significance:
+        "Permanent US military bases established in Saudi Arabia; no-fly zones over Iraq; sets stage for 2003 war.",
+      region: "Kuwait, Iraq",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Desert_Storm_Marines.jpg/800px-Desert_Storm_Marines.jpg",
     },
-    { 
-      year: "2003-2011", 
-      event: "Iraq War", 
-      description: "US-led invasion based on WMD claims, Saddam Hussein overthrown. Insurgency and civil war follow. US withdraws 2011.",
-      casualties: "500,000+ total, 4,500+ US troops",
-      significance: "Rise of ISIS, Iranian influence expands, regional instability, Shia-led government",
-      link: "https://en.wikipedia.org/wiki/Iraq_War",
-      image: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop",
-      region: "Iraq"
+    {
+      year: "2003–2011",
+      event: "Iraq War",
+      wikiSlug: "Iraq_War",
+      description:
+        "The US and UK invade Iraq on disputed WMD intelligence. Saddam Hussein is captured and executed. The power vacuum triggers a brutal insurgency, sectarian civil war, and ultimately the rise of ISIS.",
+      casualties: "500,000+ total, 4,500 US troops",
+      significance:
+        "Collapse of Iraqi state structures; exponential growth of Iranian regional influence; direct path to ISIS formation.",
+      region: "Iraq",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Iraq_War_montage.jpg/800px-Iraq_War_montage.jpg",
     },
-    { 
-      year: "2006", 
-      event: "Second Lebanon War", 
-      description: "Hezbollah captures Israeli soldiers, triggering 34-day war. Massive Israeli airstrikes on Lebanon, Hezbollah rocket attacks on Israel.",
+    {
+      year: "2006",
+      event: "Second Lebanon War",
+      wikiSlug: "2006_Lebanon_War",
+      description:
+        "Hezbollah captures two Israeli soldiers, triggering a 34-day war. Israel conducts massive airstrikes across Lebanon; Hezbollah fires thousands of rockets into northern Israel. A UN ceasefire ends the fighting in a political stalemate.",
       casualties: "1,500+",
-      significance: "Hezbollah gains prestige, UNIFIL expanded, stalemate",
-      link: "https://en.wikipedia.org/wiki/2006_Lebanon_War",
-      image: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop",
-      region: "Lebanon, Israel"
+      significance:
+        "Hezbollah emerges politically stronger despite military losses; UNIFIL peacekeeping force expanded.",
+      region: "Lebanon, Israel",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Lebanon_War_2006.jpg/800px-Lebanon_War_2006.jpg",
     },
-    { 
-      year: "2008-2009", 
-      event: "Gaza War (Cast Lead)", 
-      description: "Israel launches 22-day operation in Gaza to stop rocket fire. Extensive destruction, international condemnation.",
+    {
+      year: "2008–2009",
+      event: "Gaza War (Cast Lead)",
+      wikiSlug: "Gaza_War_(2008%E2%80%932009)",
+      description:
+        "Israel launches a 22-day military operation in the Gaza Strip to stop Hamas rocket fire. Extensive destruction of civilian infrastructure draws widespread international condemnation.",
       casualties: "1,400+ Palestinians, 13 Israelis",
-      significance: "Blockade of Gaza continues, Hamas retains control",
-      link: "https://en.wikipedia.org/wiki/Gaza_War_(2008%E2%80%932009)",
-      image: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop",
-      region: "Gaza"
+      significance:
+        "Blockade of Gaza continues; Hamas retains political and military control of the strip.",
+      region: "Gaza",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Gaza_War_2008.jpg/800px-Gaza_War_2008.jpg",
     },
-    { 
-      year: "2011-2020", 
-      event: "Syrian Civil War", 
-      description: "Protests turn into multi-sided conflict with ISIS, Assad regime, rebels, and foreign powers including Russia, Iran, US, Turkey.",
-      casualties: "600,000+ total, 13 million displaced",
-      significance: "Refugee crisis, rise of ISIS, Russian intervention, Iranian expansion",
-      link: "https://en.wikipedia.org/wiki/Syrian_civil_war",
-      image: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop",
-      region: "Syria"
+    {
+      year: "2011–2020",
+      event: "Syrian Civil War",
+      wikiSlug: "Syrian_civil_war",
+      description:
+        "Arab Spring protests escalate into a multi-sided civil war involving Assad's regime, ISIS, various rebel factions, and foreign powers including Russia, Iran, the US, and Turkey.",
+      casualties: "600,000+ dead, 13 million displaced",
+      significance:
+        "Worst refugee crisis since WWII; rise and fall of ISIS territorial caliphate; Russian military power projected into the Middle East.",
+      region: "Syria",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Aleppo_during_the_Syrian_Civil_War.jpg/800px-Aleppo_during_the_Syrian_Civil_War.jpg",
     },
-    { 
-      year: "2014", 
-      event: "Gaza War (Protective Edge)", 
-      description: "50-day conflict between Israel and Hamas. Extensive destruction in Gaza, heavy casualties.",
+    {
+      year: "2014",
+      event: "Gaza War (Protective Edge)",
+      wikiSlug: "2014_Gaza_War",
+      description:
+        "A 50-day conflict between Israel and Hamas, triggered by the kidnapping and murder of three Israeli teenagers. Israel targets Hamas tunnel infrastructure; Gaza suffers extensive civilian casualties and destruction.",
       casualties: "2,200+ Palestinians, 73 Israelis",
-      significance: "Tunnel threat emerges, UN schools bombed",
-      link: "https://en.wikipedia.org/wiki/2014_Gaza_War",
-      image: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop",
-      region: "Gaza"
+      significance:
+        "Cross-border tunnel network exposed; UN facilities bombed; ceasefire leaves underlying tensions unresolved.",
+      region: "Gaza",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Gaza_2014_war.jpg/800px-Gaza_2014_war.jpg",
     },
-    { 
-      year: "2015", 
-      event: "Iran Nuclear Deal (JCPOA)", 
-      description: "P5+1 sign agreement with Iran to limit nuclear program in exchange for sanctions relief.",
+    {
+      year: "2015",
+      event: "Iran Nuclear Deal (JCPOA)",
+      wikiSlug: "Joint_Comprehensive_Plan_of_Action",
+      description:
+        "After years of negotiations, the P5+1 powers sign the JCPOA with Iran, limiting its nuclear enrichment in exchange for sanctions relief. President Trump withdraws the US from the deal in 2018, triggering Iranian escalation.",
       casualties: "N/A",
-      significance: "Diplomatic breakthrough, US withdraws 2018, tensions escalate",
-      link: "https://en.wikipedia.org/wiki/Joint_Comprehensive_Plan_of_Action",
-      image: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop",
-      region: "Iran"
+      significance:
+        "Landmark diplomatic agreement; US withdrawal in 2018 accelerates Iran's nuclear programme to near-weapons-grade levels.",
+      region: "Iran",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Iran_nuclear_deal_signing.jpg/800px-Iran_nuclear_deal_signing.jpg",
     },
-    { 
-      year: "2017-2021", 
-      event: "US Embassy Moves to Jerusalem", 
-      description: "Trump administration recognizes Jerusalem as Israeli capital, moves embassy. Palestinian protests at Gaza border.",
+    {
+      year: "2017–2021",
+      event: "US Embassy Moves to Jerusalem",
+      wikiSlug: "United_States_recognition_of_Jerusalem_as_capital_of_Israel",
+      description:
+        "The Trump administration formally recognizes Jerusalem as Israel's capital and moves the US embassy from Tel Aviv. Palestinians respond with mass protests along the Gaza border fence, resulting in over 200 deaths.",
       casualties: "200+ Palestinians killed in protests",
-      significance: "Shift in US policy, Palestinian Authority cuts ties",
-      link: "https://en.wikipedia.org/wiki/United_States_recognition_of_Jerusalem_as_capital_of_Israel",
-      image: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop",
-      region: "Jerusalem"
+      significance:
+        "Dramatic shift in decades of US policy; Palestinian Authority freezes relations with the US; widespread international criticism.",
+      region: "Jerusalem",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/US_Embassy_Jerusalem_2018.jpg/800px-US_Embassy_Jerusalem_2018.jpg",
     },
-    { 
-      year: "2020", 
-      event: "Abraham Accords", 
-      description: "UAE and Bahrain normalize relations with Israel, followed by Morocco and Sudan. Break from Arab consensus.",
+    {
+      year: "2020",
+      event: "Abraham Accords",
+      wikiSlug: "Abraham_Accords",
+      description:
+        "The UAE, Bahrain, Morocco, and Sudan normalize diplomatic relations with Israel in US-brokered agreements — the first Arab-Israeli normalization in 26 years, breaking the Arab consensus that peace required Palestinian statehood first.",
       casualties: "N/A",
-      significance: "Shift in Middle East alliances, Palestinian cause sidelined",
-      link: "https://en.wikipedia.org/wiki/Abraham_Accords",
-      image: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop",
-      region: "UAE, Bahrain, Israel"
+      significance:
+        "Reshaping of Middle East alliances; Palestinian cause sidelined; strategic alignment against Iran.",
+      region: "UAE, Bahrain, Israel",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Abraham_Accords_signing_ceremony.jpg/800px-Abraham_Accords_signing_ceremony.jpg",
     },
-    { 
-      year: "2020", 
-      event: "US Kills Soleimani", 
-      description: "US drone strike kills Iranian General Qasem Soleimani in Baghdad. Iran retaliates with missile strike on US base in Iraq.",
-      casualties: "Several",
-      significance: "Major escalation, near-war situation",
-      link: "https://en.wikipedia.org/wiki/Assassination_of_Qasem_Soleimani",
-      image: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop",
-      region: "Iraq, Iran"
+    {
+      year: "2020",
+      event: "Assassination of Qasem Soleimani",
+      wikiSlug: "Assassination_of_Qasem_Soleimani",
+      description:
+        "A US drone strike kills IRGC Quds Force commander General Qasem Soleimani outside Baghdad airport. Iran retaliates by firing ballistic missiles at US bases in Iraq, wounding over 100 American troops.",
+      casualties: "Several killed, 100+ US troops injured in retaliation",
+      significance:
+        "Near-war between US and Iran; Soleimani was architect of Iranian regional proxy strategy.",
+      region: "Iraq, Iran",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Qasem_Soleimani.jpg/640px-Qasem_Soleimani.jpg",
     },
-    { 
-      year: "2021", 
-      event: "May 2021 Israel-Gaza War", 
-      description: "11-day conflict triggered by Jerusalem tensions. Heavy rocket fire and airstrikes.",
-      casualties: "250+ Palestinians, 13 Israelis",
-      significance: "Intercommunal violence in Israel, regional reactions",
-      link: "https://en.wikipedia.org/wiki/2021_Israel%E2%80%93Palestine_crisis",
-      image: "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=600&h=400&fit=crop",
-      region: "Gaza, Israel"
+    {
+      year: "2021",
+      event: "May 2021 Israel-Gaza Conflict",
+      wikiSlug: "2021_Israel%E2%80%93Palestine_crisis",
+      description:
+        "An 11-day conflict triggered by Israeli police raids on Al-Aqsa Mosque compound and Sheikh Jarrah evictions. Hamas fires over 4,000 rockets into Israel; Israel conducts over 1,500 airstrikes on Gaza.",
+      casualties: "260+ Palestinians, 13 Israelis",
+      significance:
+        "Widespread intercommunal violence inside Israel itself for the first time in decades.",
+      region: "Gaza, Israel",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/2021_conflict_Gaza.jpg/800px-2021_conflict_Gaza.jpg",
     },
-    { 
-      year: "2023-2026", 
-      event: "Israel-Gaza War", 
-      description: "Ongoing conflict with regional implications. Multiple ceasefires attempted. Humanitarian crisis in Gaza.",
-      casualties: "50,000+ total, mostly civilians",
-      significance: "Regional escalation, US naval deployment, Iran-backed groups involved",
-      link: "https://en.wikipedia.org/wiki/Israel%E2%80%93Hamas_war",
-      image: "https://images.unsplash.com/photo-1542810634-71277ad95d5d?w=600&h=400&fit=crop",
-      region: "Gaza, Israel"
+    {
+      year: "2023–2026",
+      event: "Israel-Gaza War",
+      wikiSlug: "Israel%E2%80%93Hamas_war",
+      description:
+        "On 7 October 2023 Hamas launches an unprecedented attack on southern Israel, killing 1,200 and taking 240 hostages. Israel responds with a massive ground and air campaign in Gaza. Over 50,000 Palestinians killed. Conflict spreads to involve Hezbollah, Houthis, and Iranian proxies across the region.",
+      casualties: "1,200 Israelis on 7 Oct; 50,000+ Palestinians",
+      significance:
+        "Largest Middle East war in a generation; humanitarian catastrophe; threatens regional escalation with Iran.",
+      region: "Gaza, Israel",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Gaza_destruction_2023.jpg/800px-Gaza_destruction_2023.jpg",
     },
-    { 
-      year: "2024", 
-      event: "Iran-Israel Direct Conflict", 
-      description: "Iran launches direct missile and drone attack on Israel for first time. Israel strikes Iranian facilities.",
-      casualties: "Limited",
-      significance: "New era of direct confrontation, Arab states help defend Israel",
-      link: "https://en.wikipedia.org/wiki/2024_Iran%E2%80%93Israel_conflict",
-      image: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop",
-      region: "Iran, Israel"
-    }
+    {
+      year: "2024",
+      event: "Iran-Israel Direct Conflict",
+      wikiSlug: "2024_Iran%E2%80%93Israel_conflict",
+      description:
+        "Iran launches its first-ever direct attack on Israel — over 300 drones and ballistic missiles fired from Iranian soil. Israel, the US, UK, Jordan, and Saudi Arabia intercept 99% of the projectiles. Israel subsequently strikes Iranian air defence systems.",
+      casualties: "Limited direct casualties",
+      significance:
+        "First direct Iran-Israel military confrontation; new phase of open, declared conflict replaces proxy warfare.",
+      region: "Iran, Israel",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Iron_Dome_intercepts_2024.jpg/800px-Iron_Dome_intercepts_2024.jpg",
+    },
   ];
 };
